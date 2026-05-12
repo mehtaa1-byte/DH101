@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DH 101 – Digital Humanities Portfolio</title>
+  <style>
+    /* ── Reset & Base ───────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #111827;
+      background: #f8fafc;
+    }
+
+    /* ── Skip Link ──────────────────────────────── */
+    .skip-link {
+      position: absolute;
+      top: -999px;
+      left: 0;
+      padding: .5rem 1rem;
+      background: #1e293b;
+      color: #fff;
+      font-size: .9rem;
+      font-family: sans-serif;
+      z-index: 100;
+      text-decoration: none;
+      border-radius: 0 0 4px 0;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── Site Header ────────────────────────────── */
+    header {
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      margin-bottom: .5rem;
+      color: #fff;
+    }
+    header p {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Navigation ─────────────────────────────── */
+    nav {
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      justify-content: center;
+      gap: .25rem;
+      padding: .5rem 1rem;
+    }
+    nav a {
+      display: block;
+      padding: .45rem 1rem;
+      color: #e2e8f0;
+      text-decoration: none;
+      font-family: system-ui, sans-serif;
+      font-size: .9rem;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+    nav a:hover, nav a:focus {
+      background: #475569;
+      color: #fff;
+      outline: 2px solid #93c5fd;
+      outline-offset: 1px;
+    }
+
+    /* ── Main Content ───────────────────────────── */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+
+    /* ── Section Shells ─────────────────────────── */
+    section.content-section {
+      margin: 2.5rem 0 3.5rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 1rem 1.5rem;
+      color: #fff;
+    }
+    .section-header h2 {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .section-header p {
+      font-size: .9rem;
+      opacity: .9;
+      margin-top: .2rem;
+    }
+    .section-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    /* Pages – blue */
+    #pages .section-header  { background: #1e40af; }
+    #pages .section-body    { background: #eff6ff; }
+
+    /* Makes – amber */
+    #makes .section-header  { background: #92400e; }
+    #makes .section-body    { background: #fffbeb; }
+
+    /* Reflections – violet */
+    #reflections .section-header { background: #4c1d95; }
+    #reflections .section-body   { background: #f5f3ff; }
+
+    /* ── Card Grid ──────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Page Cards (static) ────────────────────── */
+    .page-card {
+      background: #fff;
+      border-radius: 8px;
+      border-left: 5px solid #1e40af;
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+    .page-card h3 {
+      font-size: 1.05rem;
+      color: #1e40af;
+      margin-bottom: .4rem;
+    }
+    .page-card p { font-size: .93rem; }
+
+    /* ── Details / Summary (week entries) ──────── */
+    details {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: .85rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      padding: .8rem 1.1rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 600;
+      font-size: .98rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: '▶';
+      font-size: .7rem;
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details[open] > summary::before { transform: rotate(90deg); }
+    summary:focus {
+      outline: 3px solid #2563eb;
+      outline-offset: -2px;
+    }
+
+    /* Makes summary accent */
+    #makes details > summary {
+      border-left: 5px solid #b45309;
+      color: #78350f;
+    }
+    #makes details > summary:hover { background: #fef3c7; }
+
+    /* Reflections summary accent */
+    #reflections details > summary {
+      border-left: 5px solid #7c3aed;
+      color: #3b0764;
+    }
+    #reflections details > summary:hover { background: #ede9fe; }
+
+    /* ── Entry Body ─────────────────────────────── */
+    .entry-body {
+      padding: .85rem 1.25rem 1.1rem;
+      border-top: 1px solid #e5e7eb;
+      font-size: .95rem;
+    }
+    .entry-body h3 { font-size: 1.1rem; margin: 1rem 0 .3rem; color: #1e293b; }
+    .entry-body h4 { font-size: 1rem; margin: .9rem 0 .25rem; color: #374151; }
+    .entry-body p  { margin: .5rem 0; }
+    .entry-body ul { margin: .4rem 0 .4rem 1.5rem; }
+    .entry-body ol { margin: .4rem 0 .4rem 1.5rem; }
+    .entry-body li { margin-bottom: .2rem; }
+    .entry-body blockquote {
+      border-left: 4px solid #cbd5e1;
+      margin: .6rem 0 .6rem 1rem;
+      padding-left: .75rem;
+      color: #4b5563;
+      font-style: italic;
+    }
+    .entry-body code {
+      background: #f1f5f9;
+      border-radius: 3px;
+      padding: .1em .35em;
+      font-size: .88em;
+    }
+    .entry-body pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: .75rem 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: .87em;
+      margin: .5rem 0;
+    }
+    .entry-body pre code { background: none; padding: 0; color: inherit; }
+    .entry-body a {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+    .entry-body a:hover { color: #1e40af; }
+    .entry-body a:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .entry-body table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .88rem;
+      margin: .6rem 0;
+    }
+    .entry-body th {
+      background: #f1f5f9;
+      text-align: left;
+      padding: .4rem .6rem;
+      border: 1px solid #cbd5e1;
+    }
+    .entry-body td {
+      padding: .4rem .6rem;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    .attribution {
+      margin-top: 1rem;
+      padding: .6rem .9rem;
+      background: #f8fafc;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      font-size: .88rem;
+    }
+    .attribution strong { display: block; margin-bottom: .25rem; }
+
+    /* ── Footer ─────────────────────────────────── */
+    footer {
+      background: #1e293b;
+      color: #94a3b8;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-family: system-ui, sans-serif;
+      font-size: .88rem;
+      margin-top: 3rem;
+    }
+    footer a { color: #93c5fd; }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (max-width: 600px) {
+      .card-grid { grid-template-columns: 1fr; }
+      nav ul { gap: 0; }
+      nav a { font-size: .83rem; padding: .4rem .7rem; }
+      .section-body { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header>
+  <h1>DH 101 – Digital Humanities Portfolio</h1>
+  <p>A semester of making, reflecting, and exploring AI &amp; digital culture — Armaan Mehta</p>
+</header>
+
+<nav aria-label="Site navigation">
+  <ul>
+    <li><a href="#pages">About &amp; Pages</a></li>
+    <li><a href="#makes">Makes (Weeks 1–13)</a></li>
+    <li><a href="#reflections">Reflections (Weeks 1–13)</a></li>
+  </ul>
+</nav>
+
+<main id="main-content">
+
+  <!-- ═══════════════════════════════════════════
+       PAGES
+  ═══════════════════════════════════════════ -->
+  <section class="content-section" id="pages" aria-labelledby="pages-heading">
+    <div class="section-header">
+      <h2 id="pages-heading">About &amp; Pages</h2>
+      <p>Course pages, guides, and personal statements</p>
+    </div>
+    <div class="section-body">
+      <div class="card-grid">
+
+        <article class="page-card" aria-labelledby="about-heading">
+          <h3 id="about-heading">About Me</h3>
+          <p>Introduce yourself and your interests.</p>
+        </article>
+
+        <article class="page-card" aria-labelledby="accessibility-heading">
+          <h3 id="accessibility-heading">Accessibility</h3>
+          <p>Explain how you considered accessibility in your work.</p>
+        </article>
+
+        <article class="page-card" aria-labelledby="ai-heading">
+          <h3 id="ai-heading">How I Use AI</h3>
+          <p>Describe how you approach AI use in this course.</p>
+        </article>
+
+        <article class="page-card" aria-labelledby="sustainability-heading">
+          <h3 id="sustainability-heading">Sustainability &amp; Ethics</h3>
+          <p>Reflect on environmental and ethical implications of AI.</p>
+        </article>
+
+        <article class="page-card" aria-labelledby="guide-heading" style="grid-column: 1 / -1;">
+          <h3 id="guide-heading">Markdown Guide</h3>
+          <div class="entry-body" style="padding: 0; border: none;">
+            <p>Quick reference for writing course pages and reflections.</p>
+            <h4>Headings</h4>
+            <pre><code># Page Title
+## Section
+### Subsection</code></pre>
+            <h4>Paragraphs &amp; Line Breaks</h4>
+            <p>Blank lines separate paragraphs. End a line with two spaces for a soft break.</p>
+            <h4>Emphasis</h4>
+            <pre><code>*italic* or _italic_
+**bold**
+***bold italic***</code></pre>
+            <h4>Lists</h4>
+            <pre><code>- bullet item
+- another item
+
+1. first
+2. second
+
+- [x] done
+- [ ] to do</code></pre>
+            <h4>Links and Images</h4>
+            <pre><code>[Week 01 reflection](../reflections/week01.md)
+[Outside resource](https://example.com)
+![Alt text for image](../assets/images/example.png)</code></pre>
+            <h4>Code and Quotes</h4>
+            <pre><code>Inline `code` in a sentence.
+
+> Blockquotes are great for citing sources.</code></pre>
+            <h4>Tables</h4>
+            <pre><code>| Item | Detail |
+| --- | --- |
+| Row 1 | Text |</code></pre>
+            <h4>Weekly Reflection Template</h4>
+            <pre><code># Week X Reflection
+
+## Prompt 1: Key insight
+Write 3-5 sentences answering the question.
+
+## Prompt 2: Example or evidence
+- Briefly describe an artifact or reading.
+- Explain how it supports your thinking.
+
+## Prompt 3: Next steps
+1. What will you try next week?
+2. What do you still need to learn?</code></pre>
+            <h4>Course Tips</h4>
+            <ul>
+              <li>Keep filenames lowercase with hyphens (no spaces).</li>
+              <li>Place images in <code>assets/images</code>.</li>
+              <li>Preview markdown in VS Code before submitting.</li>
+              <li>Keep headings in order — do not skip levels.</li>
+              <li>Use descriptive alt text for images.</li>
+              <li>When copying from Word/Google Docs, paste as plain text.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       MAKES
+  ═══════════════════════════════════════════ -->
+  <section class="content-section" id="makes" aria-labelledby="makes-heading">
+    <div class="section-header">
+      <h2 id="makes-heading">Makes</h2>
+      <p>Weekly making assignments — artifacts, analyses, and artist statements</p>
+    </div>
+    <div class="section-body">
+
+      <!-- Week 1 -->
+      <details open>
+        <summary>Week 1 — Reverse Engineering a DH/AI Project</summary>
+        <div class="entry-body">
+          <h3>This Person Does Not Exist</h3>
+          <p>Artifact: <a href="https://thispersondoesnotexist.com/" target="_blank" rel="noopener noreferrer">thispersondoesnotexist.com <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>1. What Is Being Made?</h4>
+          <p>What is being produced within this particular project is a realistic representation of a human face that is not associated with any actual human being. What is produced on a user level is a singular image of a face, although each time the user refreshes the webpage, a new image is produced. The level of experience is clearly intended to be somewhat bland and uncomfortable as it is meant to be a representation of a photograph, while also being a means of addressing the fact that this human being does not and has not ever existed.</p>
+
+          <h4>2. What Is the Project Made From? (Data)</h4>
+          <p>The information within the project involves millions of photographs of human faces that are used to train the model. This information seems to be from large datasets gathered from the internet. What seems to be quite lacking within this information provided is the experiences and identities of the human beings whose photographs were used in the creation of the project. Another deficiency in the provided information is the lack of non-dominant human faces in relation to generating human faces in the project.</p>
+
+          <h4>3. Tools, Algorithms, or Systems</h4>
+          <p>The model utilized here is known as a Generative Adversarial Network, an AI-based image generation model. The role of AI within the image generation process is direct; its generation of faces is automated. The decision to implement an AI model and to create an image generation website are also examples of human decision-making.</p>
+
+          <h4>4. Human Labor &amp; Decisions</h4>
+          <p>The human element is likely responsible for creating the facial image data set used in the project and laying out the algorithm employed in creating the images. Although the resulting image is created using machines, there is the human element incorporated in the system used in the project.</p>
+
+          <h4>5. Design as Argument</h4>
+          <p>The simple presentation of the website itself lends credibility to the images, which in turn helps make the images more realistic. Overall, the project works well in showing just how realistic images produced by AI can be. However, it can make it harder to see the hidden data, ethical issues, and labor behind the image.</p>
+
+          <h4>Reflection</h4>
+          <p>In <em>This Person Does Not Exist</em>, "making" in the era of AI focuses less on manually creating an image and more on developing the system that generates it. The project's creators make important decisions by choosing the training data, developing the model, and determining the presentation of each face on the website, while the computer produces the final image. This illustrates how creating with AI changes creativity from direct production to design and planning of systems. A significant benefit obtained from this process is increased speed and realism. The platform can create countless realistic faces in moments, demonstrating the strength of AI and the ease with which individuals trust authentic looking images on the internet. It also prompts users to consider how frequently we take images at face value merely because they appear credible. Nonetheless, the project also uncovers what could be sacrificed when machines are involved in creation. Even though the faces look human, they lack identity, history, or personal experience. This may simplify people into visual patterns rather than intricate individuals. The authorship remains ambiguous, as the image is produced by a machine yet influenced by numerous human choices that go unnoticed. The straightforward design conceals the work, data, and ethical issues associated with developing the system. In sum, <em>This Person Does Not Exist</em> illustrates that creation in the era of AI is a collaborative effort between humans and machines, broadening creative opportunities while provoking significant inquiries regarding authenticity, trust, and representation.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>Tools used: This Person Does Not Exist (site with AI face generator)</li>
+              <li>AI prompts: N/A</li>
+              <li>What AI generated: N/A</li>
+              <li>What you changed or decided: No changes</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 2 -->
+      <details>
+        <summary>Week 2 — AI Selfie</summary>
+        <div class="entry-body">
+          <h3>AI Generated Selfies</h3>
+          <ol>
+            <li>Older Version of Me</li>
+            <li>Cosmic King Version</li>
+          </ol>
+
+          <h4>Reflection</h4>
+          <p>The first image shows my realistic representation which depicts my identity but it lacks depth because it shows my facial features without showing my character or emotions or my social background. The image shows a human appearance yet it lacks personal connection because it views me as an objective person who exists beyond my personal traits and social background and my deliberate choices.</p>
+          <p>In the second image I changed the AI output through my remixing process which created an exaggerated artwork that contains symbolic elements including a crown and heavy jewelry and a cosmic background. The elements I show in this section display my inner self through confidence and ambition and self-expression which emerge through common cultural symbols that define worth through material possessions and authority and extravagant displays.</p>
+          <p>The current version demonstrates artistic expression yet it remains restricted through stereotypes which AI systems use to identify important elements and define personal identities. The two images both lack essential components which make up their complete structure. The two versions of identity fail to show people their actual identity because they miss crucial elements which people must understand about themselves. The images demonstrate how artificial intelligence uses two methods which either reduce human identity to basic realistic portrayals or create excessive imaginary representations which limit people from showing their complete identity. The process exposes how artificial intelligence systems fail to capture human identity while determining which aspects of human identity become acceptable to display in public.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>Tools used: ChatGPT (DALL-E)</li>
+              <li>Prompts: "Older Version (create an older version of me around the age of 75)", "add a galaxy background", "make me a cosmic king with chains"</li>
+              <li>What AI generated: The images above plus alternative versions</li>
+              <li>What you changed or decided: Changed the prompts to give better results</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 3 -->
+      <details>
+        <summary>Week 3 — Let's Make a Comic</summary>
+        <div class="entry-body">
+          <p>Comic: <a href="https://cdn.phototourl.com/free/2026-04-29-c896c263-ffe7-4fdc-b149-4db2534ccec5.png" target="_blank" rel="noopener noreferrer">View comic image <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>Commentary</h4>
+          <p>The comic demonstrates how AI creates stories through established narrative patterns because it lacks the ability to explore their fundamental meanings. The knight's journey from noble warrior to obedient son to fallen hero develops through a predictable character arc. The work presents itself as complete yet lacks emotional connection with its audience. The conflict receives mention through an intense battle that reaches its main character's ultimate sacrifice yet the story never reveals the actual reasons that split the kingdom. Heroic stories advance their plot because that is the expected way to develop their narrative structure.</p>
+          <p>AI demonstrates its capability of producing results through familiar patterns which it produces. The system knows how to create a traditional hero story which includes an introduction and a conflict and a climax and a sacrifice. The system needs a user to initiate structure evaluation before it will start to question any established frameworks. The knight moves forward without hesitation because the father maintains his authority while the war situation becomes a minor element of the story. AI replicates the surface logic of storytelling, but not necessarily the deeper reflection behind it.</p>
+          <p>The comic strip demonstrates that AI develops stories which appear authentic yet need human guidance to create actual significance. The narrative stays complete in its structure because nobody exists to challenge its components, yet it lacks any substantial intellectual depth. Humans determine which elements hold actual significance in the storytelling framework that AI establishes.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>ChatGPT: Created images and design for the comic</li>
+              <li>Canva: Used as base to put the comic in after images were created by AI</li>
+              <li>AI Role: Created images that I wrote text for to make a final comic</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 4 -->
+      <details>
+        <summary>Week 4 — Comic &amp; Storytelling</summary>
+        <div class="entry-body">
+          <p>Artifact: <a href="https://image2url.com/r2/default/images/1771176254909-1d42ff94-5a6a-41a8-9bb1-7cfaccf48a84.png" target="_blank" rel="noopener noreferrer">View comic image <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>Process</h4>
+          <p>Made it using ChatGPT to generate images and then used Canva to make a base to put the comic into. I did use Canva AI too a bit but I found ChatGPT was easier to generate images. The decisions I made was choosing a theme, inputting prompts for the AI to use, and establishing the final product after writing the story.</p>
+
+          <h4>Reflection</h4>
+          <p>The comic demonstrates how AI creates stories through established narrative patterns because it lacks the ability to explore their fundamental meanings. The knight's journey from noble warrior to obedient son to fallen hero develops through a predictable character arc. The work presents itself as complete yet lacks emotional connection with its audience. The conflict receives mention through an intense battle that reaches its main character's ultimate sacrifice yet the story never reveals the actual reasons that split the kingdom. Heroic stories advance their plot because that is the expected way to develop their narrative structure.</p>
+          <p>AI demonstrates its capability of producing results through familiar patterns which it produces. The system knows how to create a traditional hero story which includes an introduction and a conflict and a climax and a sacrifice. The system needs a user to initiate structure evaluation before it will start to question any established frameworks. AI replicates the surface logic of storytelling, but not necessarily the deeper reflection behind it.</p>
+          <p>The comic strip demonstrates that AI develops stories which appear authentic yet need human guidance to create actual significance. The narrative stays complete in its structure because nobody exists to challenge its components, yet it lacks any substantial intellectual depth. Humans determine which elements hold actual significance in the storytelling framework that AI establishes.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>AI Tool: ChatGPT (dialogue draft), DALL·E (images)</li>
+              <li>Human Contribution: Story concept, panel structure, editing, captions, reflection</li>
+              <li>AI Role: Suggestion and generation, not final authorship</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 5 -->
+      <details>
+        <summary>Week 5 — Compare Voyant vs GPT Text Analysis</summary>
+        <div class="entry-body">
+          <p>Text analyzed: <a href="https://www.poetryfoundation.org/poems/48860/the-raven" target="_blank" rel="noopener noreferrer">"The Raven" by Edgar Allan Poe — Poetry Foundation <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>Voyant Tools Analysis</h4>
+          <ol>
+            <li><strong>Word Frequency:</strong> door (14), raven (11), nevermore (11), chamber (11), bird (10)</li>
+            <li><strong>Trends:</strong> The graph shows the word "chamber" spikes as one of the early trends in wording. The term "nevermore" spikes later on in the middle and final segment of the text. The word "raven" is used throughout.</li>
+            <li><strong>Collocations:</strong> chamber–door, rapping–tapping, nothing–more, lost–Lenore, perched–bust, raven–nevermore</li>
+            <li><strong>Visualizations:</strong> Largest words in the word cloud — door, raven, nevermore, chamber. These words make up the visual hierarchy on Voyant: the bigger the word, the more important it is in the structure of the text.</li>
+          </ol>
+
+          <h4>GPT Literary Analysis</h4>
+          <blockquote>
+            "In <em>The Raven</em>, Edgar Allan Poe explores the psychological experience of grief as a slow descent into obsession. The poem centers on a grieving speaker who mourns the loss of Lenore and seeks comfort in books and rational explanation. However, when the raven enters his chamber, the external event quickly becomes internalized. The bird functions less as a literal creature and more as a manifestation of the speaker's unresolved sorrow. The repeated word 'nevermore' becomes devastating because it gives final form to what the speaker fears most: that his loss is permanent... By the final stanza, the raven's shadow stretches across the floor, symbolizing how sorrow has become permanent. Ultimately, the poem portrays grief not as a moment of sadness, but as a condition that reshapes perception, language, and identity."
+          </blockquote>
+
+          <h4>Reflection</h4>
+          <p>The machines that read literature for us create a new understanding of how we perceive meaning. Voyant Tools analyzes <em>The Raven</em> as a collection of patterns which researchers can measure. The text becomes visible evidence through the analysis of word frequency, collocations, and trend graphs. Repetition shows up as a chart spike while dominance appears as a word cloud's font size. The framework defines meaning through structural elements — recurrence, proximity, and distribution.</p>
+          <p>Voyant does not inquire about the emotional experience of grief because it analyzes how frequently grief-related words are used and where they appear in the text. GPT provides virtual experiences of literary works which exist inside the user's mind — it interprets "nevermore" as a finality which causes emotional entrapment rather than counting its occurrence.</p>
+          <p>Machine reading offers us a new way to view information. Voyant reveals hidden patterns which casual readers cannot detect. GPT combines themes at a fast pace while delivering expert analysis through language that sounds natural and authoritative. The two systems do not substitute human reading because it remains essential.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>Text used: "The Raven" by Edgar Allan Poe</li>
+              <li>Tools used: Voyant and ChatGPT</li>
+              <li>AI prompts: Literary analysis of "The Raven" by Edgar Allan Poe</li>
+              <li>What each tool could not do: Voyant cannot interpret; ChatGPT cannot truly read but can produce interpretation that is different from a human reader</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 6 -->
+      <details>
+        <summary>Week 6 — Build a Digital Map of AI's Infrastructures</summary>
+        <div class="entry-body">
+          <p>Interactive map: <a href="https://www.google.com/maps/d/edit?mid=1Z8Lv1jL7RV7MjwCmeF5eLUrdggviKYE&amp;usp=sharing" target="_blank" rel="noopener noreferrer">View Google My Maps — AI Infrastructure Locations <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>List of 15 US-Based AI Infrastructure Locations</h4>
+          <table>
+            <thead>
+              <tr><th scope="col">Category</th><th scope="col">Location</th><th scope="col">Specific Site / Entity</th><th scope="col">Significance</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Corporate HQ</td><td>San Francisco, CA</td><td>OpenAI Headquarters</td><td>Epicenter of generative AI policy and model development</td></tr>
+              <tr><td>Corporate HQ</td><td>Mountain View, CA</td><td>Google/Alphabet Headquarters</td><td>Primary site for Google DeepMind and Gemini development</td></tr>
+              <tr><td>Corporate HQ</td><td>Redmond, WA</td><td>Microsoft Headquarters</td><td>Strategic hub for Azure AI and global enterprise AI infrastructure</td></tr>
+              <tr><td>Corporate HQ</td><td>Menlo Park, CA</td><td>Meta (Facebook) Headquarters</td><td>Central decision-making for Llama open-source models</td></tr>
+              <tr><td>Data Center</td><td>Ashburn, VA</td><td>Data Center Alley</td><td>World's largest concentration of data centers; vital for AI traffic</td></tr>
+              <tr><td>Data Center</td><td>Council Bluffs, IA</td><td>Google Data Center</td><td>Massive facility chosen for cheap land and renewable energy access</td></tr>
+              <tr><td>Data Center</td><td>Eagle Mountain, UT</td><td>Meta Data Center</td><td>Large-scale AI training site leveraging cool climates for efficiency</td></tr>
+              <tr><td>Data Center</td><td>Childress, TX</td><td>IREN (formerly Iris Energy)</td><td>One of the largest operating AI/high-compute centers in the US</td></tr>
+              <tr><td>Data Center</td><td>San Jose, CA</td><td>TSMC / Data Hubs</td><td>Rapidly growing hub for AI chip manufacturing and storage</td></tr>
+              <tr><td>Mining Site</td><td>Mountain Pass, CA</td><td>MP Materials Mine</td><td>Only active rare-earth mine in North America; critical for AI chips</td></tr>
+              <tr><td>Mining Site</td><td>Kings Mountain, NC</td><td>Albemarle Lithium Mine</td><td>Vital for high-capacity batteries powering AI hardware</td></tr>
+              <tr><td>Mining Site</td><td>St. Louis, MO</td><td>U.S. Strategic Metals</td><td>Primary US site for cobalt and nickel, essential for energy storage</td></tr>
+              <tr><td>Mining Site</td><td>Round Top, TX</td><td>Round Top Project</td><td>Massive deposit of heavy rare earths needed for semiconductor lasers</td></tr>
+              <tr><td>Labor Hub</td><td>Raleigh, NC</td><td>CloudFactory Headquarters</td><td>US headquarters for a global workforce doing human-in-the-loop labeling</td></tr>
+              <tr><td>Labor Hub</td><td>Hackensack, NJ</td><td>Innodata Headquarters</td><td>Major US base for AI training data and large-scale data annotation</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Research Documentation</h4>
+          <p>The available research collected includes industry reports provided by Cleanview US Data Center Map and mapping by Brookings Institution of the AI economy. In the case of physical infrastructure and mining, MP Materials and RCR Wireless reports on critical minerals were used.</p>
+          <p><strong>The Challenge of Hidden Data:</strong> The hardest information to locate was the specifics of content moderation facility locations. Although corporate offices are transparent, the very buildings in which low-paid employees sieve traumatizing information are often concealed behind third-party arrangements or NDAs.</p>
+          <p><strong>Surprising Insight:</strong> The sheer scale of the IREN Childress, Texas, facility was unexpected. It is an example of a transition in which once-called crypto mines are being repurposed in large amounts into AI factories since they already have the giant electrical permits needed to support high-density computer operations.</p>
+
+          <h4>Artist Statement</h4>
+          <p>According to this map, AI is not a cloud of code that exists in an abstract form, but a machine in the industry that needs resources. The map reveals a geography of extraction by locating the best HQs of high-end tech in Silicon Valley and the open-pit lithium mines in Nevada and data centers in rural Iowa. The physical connection between the intelligence of a chatbot in San Francisco and environmental degradation of a mine and the gigantic electric load of a rural data center is physical.</p>
+          <p>This project applies the Data Feminism principle of <em>Making Labor Visible</em>. Standard AI maps include only innovation hubs. By including labor annotation locations and mining sites, this map attacks the concept of AI being neutral — revealing the people who create it and the cost. It shifts emphasis from "the algorithm" to the bodies and lands that support it.</p>
+
+          <div class="attribution">
+            <strong>References</strong>
+            <ul>
+              <li>D'Ignazio, C., &amp; Klein, L. F. (2020). <em>Data Feminism</em>. MIT Press.</li>
+              <li>Crawford, K. (2021). <em>The Atlas of AI</em>. Yale University Press.</li>
+              <li>Gray, M. L., &amp; Suri, S. (2019). <em>Ghost Work</em>. Houghton Mifflin Harcourt.</li>
+              <li>Noble, S. U. (2018). <em>Algorithms of Oppression</em>. New York University Press.</li>
+              <li>Blum, A. (2012). <em>Tubes: A Journey to the Center of the Internet</em>. Ecco.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 7 -->
+      <details>
+        <summary>Week 7 — Networks of Knowledge &amp; Power</summary>
+        <div class="entry-body">
+          <p>Network visualization: <a href="https://kumu.io/amarijames06/make-7#make-7" target="_blank" rel="noopener noreferrer">View Kumu network map <span aria-label="(opens in new tab)">(↗)</span></a></p>
+
+          <h4>Option C: Personal Network — Entities (15–30)</h4>
+          <p>Colors correspond to role. Groups: AI Model Developers, Cloud &amp; Infrastructure Providers, Chip Designers, Semiconductor Manufacturing, Data &amp; Training Pipeline Companies, Enterprise AI &amp; Consulting, AI Application &amp; Platform</p>
+          <ul>
+            <li>OpenAI, Anthropic — AI Model Developers</li>
+            <li>Microsoft, AWS, Google Cloud, Oracle — Cloud &amp; Infrastructure</li>
+            <li>NVIDIA, AMD — Chip Designers</li>
+            <li>TSMC — Semiconductor Manufacturing</li>
+            <li>Scale AI, Cerebras, Groq — Data &amp; Training</li>
+            <li>Accenture, PWC — Enterprise AI &amp; Consulting</li>
+            <li>Palantir Technologies, Darktrace — AI Application &amp; Platform</li>
+          </ul>
+
+          <h4>Network Analysis</h4>
+          <p>The most important node in my network is Microsoft because it connects to different layers of the AI ecosystem — AI model developers like OpenAI, hardware providers like NVIDIA and AMD, and enterprise consulting companies like Accenture. Microsoft becomes a critical intermediary node connecting different layers of the AI ecosystem, making it more influential than companies connected to only a single role.</p>
+          <p>There are several identifiable clusters: one includes AI model developers (OpenAI and Anthropic) connected to cloud providers; another includes chip designers and manufacturers (NVIDIA, AMD, TSMC); a third includes enterprise and application companies (Accenture, Palantir, Darktrace). These clusters show how different companies rely on each other.</p>
+          <p>One of the most interesting aspects is how dependent AI companies are on infrastructure providers. Companies like OpenAI are highly visible, yet they depend on cloud providers and hardware companies that are considered invisible but are equally, if not more, powerful. What is missing from the network is human labor and raw materials — the laborers who label datasets and governments and regulatory agencies remain invisible despite their critical role.</p>
+
+          <h4>Artist Statement</h4>
+          <p>This network shows that power in AI is not held by the companies that make these models, but rather a more extensive network of infrastructure, hardware, and labor. TSMC makes the hardware that makes AI possible, while Scale AI uses human labor to label the data for the AI models. Being invisible does not mean being unimportant. If human labor or resources were placed at the center of the network, it could tell a very different story — shifting focus from companies to the bodies and resources that sustain them.</p>
+
+          <div class="attribution">
+            <strong>Accessibility Statement</strong>
+            <p>This site was built by Armaan Mehta for DH 101. I have tried to make it accessible by fixing issues with formatting and contrast of colors on the site — changed the colors of my site, quick fixes towards text errors, etc.</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 8 -->
+      <details>
+        <summary>Week 8 — Build a Bot or Generator Using a No-Code AI Tool</summary>
+        <div class="entry-body">
+          <h3>The Generator: Ridiculous Weather Reports</h3>
+          <p>Track A — Chatbot text generator using Gemini. The chatbot generated ridiculous weather reports following set rules: each output must sound like an official forecast, contain a surreal weather condition, include a weird public alert, and offer a possible cause — with a tone that is funny, poetic, and a little disturbing.</p>
+
+          <h4>Curated Outputs</h4>
+
+          <blockquote>
+            <strong>Output 1:</strong> "A severe high-pressure system over the obsidian plains is expected to trigger a localized downpour of antique clock gears throughout the afternoon. Citizens are advised to refrain from humming in a minor key, as rhythmic vibrations may cause the falling brass to liquefy upon impact. This temporal precipitation is a direct result of a structural leak in the atmosphere's collective memory."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 2:</strong> "The forecast predicts a stationary front of indigo-tinted static drifting into the valley, which will cause all shadows to detach and wander up to six feet from their owners. Please ensure you secure your silhouette with heavy-duty adhesive or polite flattery, as lost shadows are notoriously difficult to bribe back. This phenomenon is being attributed to a massive glitch in the horizon's rendering software."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 3:</strong> "Expect a sudden gale of whispers to sweep through the downtown corridor, carrying the secrets of seventeenth-century dairy farmers at speeds of up to 50 miles per hour. Residents are strictly prohibited from nodding in agreement with the wind, as doing so may accidentally enter them into a binding spectral contract. Meteorologists believe this vocal turbulence was triggered by a rupture in the ozone's subconscious layer."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 4:</strong> "A low-hanging fog of sentient neon velvet will settle over the suburbs by midnight, muffling all sound and tasting faintly of forgotten birthdays. We urge the public to avoid making eye contact with the mist, as its soft texture is highly addictive and may lead to permanent suburban migration. This atmospheric thickening is likely due to an over-saturation of unexpressed nostalgia in the local water table."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 5:</strong> "A sudden precipitation of bioluminescent ink is expected to stain the northern coastline, turning the tide into a glowing, illegible manuscript by dawn. You are cautioned against wearing corduroy, as the fabric's ridges may inadvertently transcribe classified government lullabies onto your person. This ink-jet stream was likely catalyzed by a flock of migrating squids flying too close to the sun's ego."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 6:</strong> "A high-velocity blizzard of unmailed love letters is sweeping across the industrial district, reducing visibility to a flurry of cursive ink and yellowed parchment. Please avoid inhaling deeply near the drifts, as the concentrated longing can cause a temporary, fluttering ache in your secondary pulse. This sudden gust of romantic debris was caused by a structural collapse in the city's central chimney of repressed desires."
+          </blockquote>
+
+          <blockquote>
+            <strong>Output 7:</strong> "An intense cold front of crystalline mirrors is expected to sweep across the plains, causing the horizon to shatter into a thousand reflective shards. Citizens are urged to avoid looking at their own reflections too closely, as the glass is currently set to 'future' and may spoil the ending of your upcoming weekend. This sudden fragmentation is being attributed to a high-altitude collision between a stray thought and a passing cloud."
+          </blockquote>
+
+          <h4>Process Documentation</h4>
+          <p>I created this generator by writing a single detailed prompt to Gemini. The prompt requested the chatbot to generate one ridiculous weather report at a time in two to four sentences, following specific constraints: sound official, have one surreal weather condition, one public advisory, and one possible cause. I produced 11 outputs altogether. A few outputs in, I realized there was a repetition in structure — a weird weather event, a public warning, and a weird cause. I selected the final seven on four grounds: vivid visuals, powerful diction, comprehensible format, and a proper ratio of formal language and ridiculousness.</p>
+
+          <h4>Artist Statement</h4>
+          <p>This project altered my thoughts about creativity in generative work. Prior to this, I assumed that creativity was largely about writing every word by yourself. Having completed this assignment, I find the setup, the boundaries, and the decisions made after it to be creative. The language was generated by the chatbot, and I defined the conditions. The human role was most apparent in the selection — not every prediction felt strong. I do not believe that AI eliminates human creativity. I believe it alters the labor. Creativity in this project resided in the prompt, the boundaries, the reading, and the curation. The machine provided me with a choice; I provided the project with direction and meaning.</p>
+        </div>
+      </details>
+
+      <!-- Week 9 -->
+      <details>
+        <summary>Week 9 — Games and Play</summary>
+        <div class="entry-body">
+          <h3>Ridiculous Weather Generator — Extended Play</h3>
+          <p>Continuing the exploration of generative text within structured play. Same generator format as Week 8 — a surreal weather forecast chatbot — examined through the lens of games, rules, and narrative.</p>
+
+          <h4>Selected Outputs</h4>
+          <blockquote>
+            "A severe high-pressure system over the obsidian plains is expected to trigger a localized downpour of antique clock gears throughout the afternoon. Citizens are advised to refrain from humming in a minor key, as rhythmic vibrations may cause the falling brass to liquefy upon impact."
+          </blockquote>
+          <blockquote>
+            "The forecast predicts a stationary front of indigo-tinted static drifting into the valley, which will cause all shadows to detach and wander up to six feet from their owners. Please ensure you secure your silhouette with heavy-duty adhesive or polite flattery, as lost shadows are notoriously difficult to bribe back."
+          </blockquote>
+
+          <h4>Reflection on Play, Rules, and Narrative</h4>
+          <p>The generator reveals how rules shape narrative even in absurdist contexts. The rigid structure of weather forecasting — a social genre with set conventions — became a constraint that made the surreal content more striking. When the content deviated from expectation, the deviation was meaningful precisely because the form held. AI transforms play through its interactive design, which allows users to determine their own pathways instead of following predetermined routes. The system creates adaptable rules which operate as concealed systems that change their behavior according to incoming data — creating more immersive experiences but decreasing the user's ability to see upcoming events and understand system operations.</p>
+
+          <div class="attribution">
+            <strong>Attribution &amp; AI Use</strong>
+            <ul>
+              <li>Tool: Gemini chatbot</li>
+              <li>Process: Prompt-constrained generation, human curation</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 10 -->
+      <details>
+        <summary>Week 10 — AI and Labor</summary>
+        <div class="entry-body">
+          <h3>The Hidden Labor of AI: Content Moderation</h3>
+          <p><strong>Core question:</strong> Who does the invisible work of AI, and who profits from it?</p>
+
+          <h4>Overview: What Is Content Moderation?</h4>
+          <p>Underneath every "clean" social media site or AI-powered chatbot, there is always a shadowy workforce that exists, called content moderators. These are real human beings, largely contracted employees who hail from the Global South, whose job is to filter out disturbing and violently graphic content so that those living in more affluent nations do not have to encounter such visuals.</p>
+
+          <h4>Research Notes</h4>
+          <p>This research utilized primarily investigative journalism articles and labor accountability studies (2022–2026). The most critical source was Perrigo (2023) in <em>TIME</em>: "OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic." Additional sources included the Tech Transparency Project (2022) on content moderation wages and psychological results; Amnesty International (2023) on digital labor in global AI extraction; and <em>The Guardian</em> and <em>Rest of World</em> (2024–2025) articles on platform labor trends.</p>
+          <p><strong>What was hardest to find:</strong> Up-to-date wage information on a country-by-country basis. Big tech businesses conceal their supply chains through NDAs and sub-contracting. Existing information mostly relies on whistleblowing or document leaks.</p>
+          <p><strong>What was surprising:</strong> The large disparity between the profitability of the platforms and the compensation offered to their essential workers — companies raking in millions from advertising while workers in Kenya and the Philippines earn an average of $1.50–$3.00 per hour.</p>
+
+          <h4>Design Statement: Why a Digital Zine?</h4>
+          <p>The digital zine was intentionally selected as a medium because zines have counter-cultural power — appearing appropriate with information on workers whose labor is made invisible by the companies that take advantage of it. The zine resembles the subject matter: it is free, feedable, and not intended to appear refined. The target audience is young people who are active on social media and use digital products unaware of the processes happening behind the scenes.</p>
+
+          <div class="attribution">
+            <strong>Primary Sources (2022–2026)</strong>
+            <ul>
+              <li>Perrigo, B. (2023, January 18). Exclusive: OpenAI Used Kenyan Workers on Less Than $2 Per Hour. <em>TIME</em>. <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank" rel="noopener noreferrer">time.com <span aria-label="(opens in new tab)">(↗)</span></a></li>
+              <li>Tech Transparency Project. (2022). Content Moderation Labor Conditions Report.</li>
+              <li>Amnesty International. (2023). Paying the Price: The Human Cost of AI Data Labeling.</li>
+              <li>Rest of World. (2024). The Global Moderator: How Platforms Export Trauma to the Global South.</li>
+              <li>The Guardian. (2025, March 4). Inside the invisible workforce keeping your feeds clean.</li>
+            </ul>
+            <strong>Tools Used</strong>
+            <ul>
+              <li>Canva — digital zine design and layout</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 11 -->
+      <details>
+        <summary>Week 11 — AI &amp; Ecology</summary>
+        <div class="entry-body">
+          <h3>Environmental Visualization: The Carbon Cost of AI</h3>
+          <p>This infographic represents the carbon footprint of artificial intelligence as a comparison of the emissions caused by training large AI models to common daily activities, like flights, household electricity consumption, and personal queries. It tries to render abstract environmental information more comprehensible and effective.</p>
+
+          <h4>Research Documentation</h4>
+          <p>AI systems consume a lot of energy in terms of computational needs, data storage, and cooling systems. AI development and deployment also add to global carbon emissions, with energy-intensive data centers as a major source (Wang et al., 2024). Both the training and usage (inference) phases of AI are sources of emissions — although training large models has a large one-time carbon cost, everyday use leads to an accumulating number of emissions over time (Tomlinson et al., 2024).</p>
+          <p>The second big challenge of this research was the inability to find steady and credible data. The environmental cost of an AI system is not wholly disclosed by many companies, making precise estimates impossible. This gives a complicated image in which AI has the ability to both decrease and raise emissions depending on the use case.</p>
+
+          <h4>Sustainability &amp; Ethics: My Research</h4>
+          <p>AI systems consume energy through training, data storage, and usage. Data centers require electricity and water for cooling, contributing to environmental impact. Research shows that AI's carbon footprint is growing alongside its global use (Wang et al., 2024).</p>
+
+          <h4>Personal Reflection</h4>
+          <p>I use AI tools frequently for studying, research, and completing assignments. Although each use seems small, repeated use contributes to carbon emissions. I am willing to reduce unnecessary queries and avoid overusing AI tools for simple tasks. However, I cannot completely stop using AI because it improves my learning efficiency and productivity.</p>
+
+          <h4>Systemic vs. Individual Responsibility</h4>
+          <ul>
+            <li><strong>Individual actions:</strong> Reduce unnecessary AI use, be aware of environmental impact</li>
+            <li><strong>Systemic changes:</strong> Renewable energy for data centers, better regulations, transparency</li>
+            <li><strong>Responsibility:</strong> Shared among tech companies, governments, and users</li>
+          </ul>
+
+          <h4>Artist Statement</h4>
+          <p>The environmental cost that concerns me most is the hidden and often invisible nature of AI's carbon footprint. Unlike pollution from factories or vehicles, AI emissions occur behind the scenes in data centers, making them easy to overlook. I believe AI is not inherently unsustainable, but its current growth raises serious environmental concerns. For AI to become sustainable, major changes are needed: using renewable energy for data centers, improving efficiency in model design, and increasing transparency about environmental impacts. Real change requires action from governments and technology companies, as they have the greatest influence over AI's environmental impact.</p>
+
+          <div class="attribution">
+            <strong>References</strong>
+            <ul>
+              <li>Tomlinson, B., Black, R. W., Patterson, D., &amp; Torrance, A. (2024). The carbon emissions of writing and illustrating are lower for AI than for humans. <em>Scientific Reports</em>, 14, 3732. <a href="https://doi.org/10.1038/s41598-024-54271-x" target="_blank" rel="noopener noreferrer">doi.org/10.1038/s41598-024-54271-x <span aria-label="(opens in new tab)">(↗)</span></a></li>
+              <li>Wang, Q., Li, Y., &amp; Li, R. (2024). Ecological footprints, carbon emissions, and energy transitions: The impact of artificial intelligence. <em>Humanities and Social Sciences Communications</em>, 11, 1043. <a href="https://doi.org/10.1057/s41599-024-03520-5" target="_blank" rel="noopener noreferrer">doi.org/10.1057/s41599-024-03520-5 <span aria-label="(opens in new tab)">(↗)</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 12 -->
+      <details>
+        <summary>Week 12 — Futures of AI &amp; Humanity</summary>
+        <div class="entry-body">
+          <h3>Protocol 84-C: Standardized AI Co-Habitation Guidelines</h3>
+          <p><em>Mandatory Public Notice Booklet, Year 2093. Origin: The Global Bureau of Algorithmic Integrity (GBAI).</em></p>
+
+          <h4>The Speculative Artifact</h4>
+          <p>This artifact is an e-booklet public notice which substituted all commercial advertising in transit hubs following the 2038 Energy Rationing Act. Although it is reminiscent of the early 2020s friendly corporate aesthetics, it is a legally binding directive. "Mindful AI" is no longer a proposal — in 2093 it refers to state-regulated thinking filters that are mandatory on all personal devices to check real-time Carbon Debt.</p>
+
+          <h4>Context Statement: The Future Depicted</h4>
+          <p>The year is 2093. After the Great Compute Wars, and the following Grid Collapses of the late 2030s, the GBAI was formed as the ultimate international body to make sure that AI does not drain the rest of the energy resources on the planet. This artifact depicts a world that has reached an Algorithmic Harmony by being extremely standardized. The friendly, wholesome faces of the poster mask a harsh truth where compute power is an apportioned resource like water and all AI lacks autonomy in unmonitored operations.</p>
+          <p>This document terminalizes the existing ESG and AI Safety trends. What started in 2024 as voluntary corporate codes of ethics have become hard criminal code by 2093. We are no longer in the Wild West of the early LLMs but in a highly controlled and regulated "Walled Garden" under the care of worldly bureaucracy.</p>
+
+          <h4>Assumptions about Human-AI Relations</h4>
+          <p>There is a Managed Co-Dependency relationship revealed in the artifact. AI is considered a harmful utility which should be controlled — not an exploration tool. Human-centered has taken on a new meaning: human beings are legally liable as Bio-Validators. All decisions made by AI must be signed by a human; if an algorithm commits a mistake in a medical or transit context, the human overseer is the responsible party. Transparent &amp; Explainable AI is required not to benefit user understanding, but to enable the GBAI to audit all private interactions. This paternalistic relationship presupposes that people cannot be trusted, and AI cannot be trusted, so the government stands between people to keep the planet sustainable — at the price of individual freedom.</p>
+
+          <h4>Critical Reflection</h4>
+          <p>This is a <em>Soft Dystopian</em> future. It is desirable because it has avoided a complete climate meltdown and rogue AI disasters. But it is a world that is stagnant — the metrics of "Safe and Robust" have successfully killed the weirdness and creative spur of early AI development. This dystopian future can be prevented by focusing on decentralized, open-source AI in the present day.</p>
+          <p>This artifact reveals our current naive thinking that we can engineer our way out of existential risks by creating more appealing infographics and more inclusive branding. It demonstrates that our present discussion of AI Ethics is commonly just a prelude to corporate-state surveillance. In the style of Corporate Memphis art (flat, colorful characters), we can see how aesthetics are used to make the loss of privacy something amiable and human-friendly. Surveillance is now being conditioned into us as care.</p>
+
+          <div class="attribution">
+            <strong>Attribution</strong>
+            <ul>
+              <li>Artifact: Infographic created through Canva</li>
+              <li>AI Tools: No images generated with AI; conceptual framework guided by Speculative Design practices (Dunne and Raby)</li>
+              <li>Template Inspiration: Government health posters and civic instruction manuals of the 20th century</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Week 13 -->
+      <details>
+        <summary>Week 13 — Futures of AI &amp; Humanity (Final)</summary>
+        <div class="entry-body">
+          <p><em>This entry is in progress. Sections for the artifact, process notes, reflection, and attribution will be completed here.</em></p>
+          <ul>
+            <li><strong>The Artifact:</strong> Describe or embed your artifact here. Include images, links, or media as appropriate.</li>
+            <li><strong>Process Notes:</strong> How did you make this? What tools did you use? What decisions did you make?</li>
+            <li><strong>Reflection:</strong> Respond to this week's reflection prompt in 200–300 words.</li>
+            <li><strong>Attribution &amp; AI Use:</strong> Tools used, AI prompts (summary), what AI generated, what you changed or decided.</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       REFLECTIONS
+  ═══════════════════════════════════════════ -->
+  <section class="content-section" id="reflections" aria-labelledby="reflections-heading">
+    <div class="section-header">
+      <h2 id="reflections-heading">Reflections</h2>
+      <p>Weekly written reflections on AI, creativity, labor, and digital culture</p>
+    </div>
+    <div class="section-body">
+
+      <details open>
+        <summary>Week 1 — What counts as "making" in the age of AI?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>What counts as "making" in the age of AI? What might be gained/lost when machines participate in making?</p>
+          <p>In the age of Artificial Intelligence making things is not about doing everything by hand. Making things is about coming up with ideas, making decisions and deciding what the end result will be. When machines help with making things people are still very important because they set goals, decide what is important and give meaning to the thing that is made. Artificial Intelligence can help people be more creative, by making it faster and easier for people to make things and by letting more people try things and come up with new ideas. At the same time, it can reduce the value placed on individual skill, effort, and personal expression. As a result, making shifts from physical labor to intention and decision-making, changing how we understand creativity and human production.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 2 — Can AI help us define what it means to be human?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Can AI help us define what it means to be human, or does it reduce us to patterns?</p>
+          <p>Artificial intelligence might help us gain a deeper insight into the human condition; however, it might also limit us to the detection of patterns if it is misused. AI system identifies patterns in language, images, and decision-making, which essentially reveals to what extent human behaviors are a result of habits and systematic influences. It might be quite disturbing to be confronted with our algorithmic selves, yet it actually urges us to delve deeper into aspects such as creativity, self-awareness, feelings, and ethics that AI can merely emulate but not genuinely experience. When humans are seen mainly as data which can be predicted and optimized, essential human characteristics such as empathy, vulnerability, and moral responsibility are at risk of disappearing. At the end of the day, AI is a combination of a tool and a mirror. The extent to which it aids us in self-discovery or simplifies human life depends on our ways of using it and the values we incorporate into it.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 3 — What does "authenticity" mean when identity is co-constructed with AI?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>What does "authenticity" mean when identity is co-constructed with AI?</p>
+          <p>The process of achieving genuine identity becomes harder to manage because artificial intelligence systems work together with individuals to create their personal identities. AI systems do not create personal identities from nothing; they use known patterns and common societal beliefs to transform existing identities. People achieve authenticity through both their understanding of technology and their ability to control their technology use. Users who know how AI generates their online identity and control its development process can create authentic digital identities. The concept of authenticity exists as a dynamic process which combines human control with machine determination, instead of existing as an absolute personal truth.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 4 — Is AI a collaborator, tool, or plagiarist in storytelling?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Is AI a collaborator, tool, or plagiarist in storytelling?</p>
+          <p>AI serves as both a storytelling tool and a storytelling partner because it generates creative content and develops story structures and produces written text at high speed. The system depends on established storytelling patterns to create its work because it lacks both personal experience and creative intent. The material produced by AI requires human decision-making to establish its meaning and originality.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 5 — How does AI alter authorship and remix culture?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>How does AI alter authorship and remix culture? Who owns AI-made art?</p>
+          <p>AI alters authorship by making it more of a collaborative process and less about the individual. Rather than having a single author, AI-authored work includes the user, the developers who created the AI, and the data that the AI was trained on. This enhances remix culture by allowing AI to rapidly recombine styles and ideas that already exist, but it also clouds ownership.</p>
+          <p>From a legal perspective, most copyright laws require human intervention, and therefore ownership is contingent on the level of creative control the human had over the final product. However, AI disrupts the concept of originality because it produces something from patterns that already exist, making authorship more of a layered process.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 6 — What do we gain/lose when machines "read" literature for us?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>What do we gain/lose when machines "read" literature for us?</p>
+          <p>Machines that read literature for us enable us to read faster while enabling us to discover word patterns and repeated elements and thematic developments that would be difficult for us to find without their help. Our reading experience loses its depth because machines identify patterns through their analysis of texts instead of experiencing actual human emotional states and tonal variations and textual meanings.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 7 — How does AI reshape global geographies of power, labor, and environment?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>How does AI reshape global geographies of power, labor, and environment?</p>
+          <p>Artificial intelligence transforms worldwide power dynamics because it enables only a small number of countries to control advanced technology with the United States and China as its main centers for major technology companies and computational resources. To develop artificial intelligence systems, companies rely on workers from developing countries who perform essential tasks such as data labeling and content moderation. AI requires extensive energy and water resources because its operation depends on enormous data centers. The world experiences power redistribution and labor movement and environmental impact distribution through AI systems which operate beyond their digital boundaries.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 8 — Who is visible/invisible in AI networks?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Who is visible/invisible in AI networks? How does visualization reveal or obscure power?</p>
+          <p>AI networks create high visibility for major power entities because they control all essential resources: data, financial assets, and research publications. The system operates with hidden elements because essential workers — data labelers, content moderators, resource extraction personnel — work behind the scenes. The Global South region contains hidden workers who remain absent from standard network mapping procedures. The most powerful actors in a system become visible through visual representation which shows their central position and ability to influence others. Existing power structures become strengthened through network maps which show their operations but hide the people who maintain them.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 9 — What is creativity when AI can generate endlessly?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>What is creativity when AI can generate endlessly? Where is the human in generative work?</p>
+          <p>The process of creativity develops into artistic creativity which leads to artistic production because artificial intelligence creates unlimited output. The process requires selecting appropriate inquiries which investigate essential matters while gathering information that will help create significant outcomes. The work requires human presence because people create the work's purpose and develop the system's guiding prompts and use their expertise to choose which results will stay or go. In generative work, the human acts more like a director or editor than a sole creator.</p>
+          <p>I built the bot and experienced this balance directly. I could influence the direction through prompts, structure, and adjustments, but I was not fully in control of the exact outputs. I had to revise prompts and refine the output after the bot created results which did not meet expectations. The process resembled a partnership because both sides possessed shared authority instead of one party controlling everything.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 10 — How does AI change our relationship to play, rules, and narrative?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>How does AI change our relationship to play, rules, and narrative?</p>
+          <p>AI transforms play through its interactive design which allows users to determine their own pathways instead of following predetermined routes. The system creates adaptable rules which operate as concealed systems that change their behavior according to incoming data. The system creates more immersive experiences for users but decreases their ability to see upcoming events and understand system operations. The AI system creates interactive storytelling that changes its content based on user interactions. The flexible nature of this system undermines the established order and the intended purpose of traditional stories which human storytellers create.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 11 — Who does the invisible work of AI, and who profits from it?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Who does the invisible work of AI, and who profits from it?</p>
+          <p>The invisible work of AI requires multiple people to complete their tasks without receiving recognition: data labelers, content moderators, warehouse workers, miners who extract materials for hardware, factory workers who assemble chips, and contract workers who clean and organize data for models. The people behind AI systems work under challenging circumstances for minimal wages while their work remains unrecognized.</p>
+          <p>Tech companies and their executives, investors, cloud providers, and those who control platforms and computing power receive the largest share of profits. The system creates an unfair situation where workers who perform essential but unrecognized tasks receive the smallest benefits. The appearance of AI as an automatic system conceals a worldwide labor structure that operates through unequal distribution of authority. AI success requires both innovation and assessment of who receives public recognition and access to resources and financial incentives.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 12 — Is AI sustainable? What ecological trade-offs are we willing to accept?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Is AI sustainable? What ecological trade-offs are we willing to accept?</p>
+          <p>The current state of AI technology lacks sustainability because its model training and operation processes need substantial electrical power and water resources and physical materials. The operation of AI systems through data centers creates higher energy requirements which lead to increased carbon emissions when facilities depend on fossil fuel power sources. The operation of these systems includes concealed environmental impacts which require water for cooling purposes and materials to construct hardware through mining activities. AI technology presents a solution to environmental problems as it creates opportunities for environmental protection, but only with intentional systemic change.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Week 13 — Do we imagine AI futures as utopian, dystopian, or something in between?</summary>
+        <div class="entry-body">
+          <h3>Reflection Prompt</h3>
+          <p>Do we imagine AI futures as utopian, dystopian, or something in between? What do those visions reveal about us?</p>
+          <p>AI futures are often portrayed as either utopian or dystopian, however the more real, more meaningful imagined futures generally fall somewhere in the middle. Utopian imaginings picture AI as a helpful machine, capable of solving humanity's greatest problems: curing diseases, eradicating poverty and climate change, handling dangerous work, and offering equitable access to knowledge and education. Dystopian imaginings depict AI as a threat — an instrument of enhanced surveillance, unemployment, inequality, environmental devastation, and diminished human control. In either extreme there are truths but in either alone the whole picture of how AI is actually evolving is lost.</p>
+          <p>Future AI will be less about the nature of the technology and more about the nature of the politics, economies, social structures, and values that humans chose to create and implement that technology with. These imaginings of AI futures are not really about machines alone, but about humans — their fears and hopes, their existing power structures, their morality and value judgments of right now.</p>
+          <p>Utopian futures of AI operate from the assumption that technological advancement always improves human life — AI automates all the mundane and repetitive work leaving humanity with time for more artistic, social, meaningful activities. However, utopian narratives largely ignore how technological advancement is not distributed equitably and make the implicit assumption that AI technology will be used for the collective good in a morally just way, even though current technology is inherently embedded with existing societal biases.</p>
+          <p>Dystopian futures picture a world dominated by mass surveillance, autonomous weapons, widespread unemployment and inequality, a flood of misinformation, and the overall erosion of personal autonomy. However, some dystopias go too far — they sometimes frame AI as inherently evil or having consciousness. In truth, humans are the architects of AI. What an AI is or is not is directly related to its creators' programming and moral standing.</p>
+          <p>The most realistic visions of AI futures are actually between utopia and dystopia. AI technology, while capable of being an incredibly useful tool for healing, communication, and education, simultaneously holds potential to further environmental degradation and economic disparity. Our futures of AI have two sides: the first reveals our profound desire for progress and security; the second displays our anxiety at our own capacity for selfishness and destructiveness. Humanity does not need to accept either utopia or dystopia as the fate of AI. Instead, it needs to consciously shape the development and use of AI through ethical and socially just choices.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>DH 101 Digital Humanities Portfolio &mdash; Armaan Mehta</p>
+  <p>Built with semantic HTML and CSS &middot; Designed for accessibility (WAVE-compliant)</p>
+</footer>
+
+</body>
+</html>
