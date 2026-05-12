@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DH 101 – Digital Humanities Portfolio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%231e40af'/><text y='.9em' font-size='62' x='50%' text-anchor='middle' font-family='Georgia,serif' fill='white'>DH</text></svg>">
   <style>
     /* ── Reset & Base ───────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -282,6 +283,45 @@
       nav a { font-size: .83rem; padding: .4rem .7rem; }
       .section-body { padding: 1rem; }
     }
+
+    /* ── Hero Animation ──────────────────────────── */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    header h1 { animation: fadeSlideIn .7s ease both; }
+    header p  { animation: fadeSlideIn .7s ease .2s both; }
+    .hero-svg  { animation: fadeSlideIn .7s ease .35s both; }
+
+    /* ── SVG Hero Network ────────────────────────── */
+    .hero-svg {
+      display: block;
+      margin: 1.2rem auto 0;
+      opacity: .45;
+    }
+
+    /* ── Expand / Collapse buttons ───────────────── */
+    .toggle-bar {
+      display: flex;
+      gap: .6rem;
+      margin-bottom: 1rem;
+    }
+    .toggle-btn {
+      background: #fff;
+      border: 1.5px solid currentColor;
+      border-radius: 5px;
+      padding: .3rem .85rem;
+      font-size: .82rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    #makes .toggle-btn    { color: #92400e; }
+    #makes .toggle-btn:hover    { background: #fef3c7; }
+    #reflections .toggle-btn { color: #4c1d95; }
+    #reflections .toggle-btn:hover { background: #ede9fe; }
+    .toggle-btn:focus { outline: 2px solid #2563eb; outline-offset: 2px; }
   </style>
 </head>
 <body>
@@ -291,6 +331,29 @@
 <header>
   <h1>DH 101 – Digital Humanities Portfolio</h1>
   <p>A semester of making, reflecting, and exploring AI &amp; digital culture — Armaan Mehta</p>
+  <svg class="hero-svg" width="340" height="80" viewBox="0 0 340 80" aria-hidden="true" focusable="false">
+    <!-- network nodes -->
+    <circle cx="170" cy="40" r="7" fill="#93c5fd"/>
+    <circle cx="80"  cy="20" r="5" fill="#6ee7b7"/>
+    <circle cx="260" cy="20" r="5" fill="#fcd34d"/>
+    <circle cx="50"  cy="58" r="4" fill="#f9a8d4"/>
+    <circle cx="120" cy="65" r="4" fill="#a5b4fc"/>
+    <circle cx="220" cy="65" r="4" fill="#fca5a5"/>
+    <circle cx="290" cy="55" r="4" fill="#6ee7b7"/>
+    <circle cx="30"  cy="35" r="3" fill="#cbd5e1"/>
+    <circle cx="310" cy="35" r="3" fill="#cbd5e1"/>
+    <!-- edges -->
+    <line x1="170" y1="40" x2="80"  y2="20" stroke="#475569" stroke-width="1.2" opacity=".6"/>
+    <line x1="170" y1="40" x2="260" y2="20" stroke="#475569" stroke-width="1.2" opacity=".6"/>
+    <line x1="170" y1="40" x2="120" y2="65" stroke="#475569" stroke-width="1.2" opacity=".6"/>
+    <line x1="170" y1="40" x2="220" y2="65" stroke="#475569" stroke-width="1.2" opacity=".6"/>
+    <line x1="80"  y1="20" x2="50"  y2="58" stroke="#475569" stroke-width=".9" opacity=".5"/>
+    <line x1="80"  y1="20" x2="30"  y2="35" stroke="#475569" stroke-width=".9" opacity=".5"/>
+    <line x1="260" y1="20" x2="290" y2="55" stroke="#475569" stroke-width=".9" opacity=".5"/>
+    <line x1="260" y1="20" x2="310" y2="35" stroke="#475569" stroke-width=".9" opacity=".5"/>
+    <line x1="50"  y1="58" x2="120" y2="65" stroke="#475569" stroke-width=".8" opacity=".4"/>
+    <line x1="220" y1="65" x2="290" y2="55" stroke="#475569" stroke-width=".8" opacity=".4"/>
+  </svg>
 </header>
 
 <nav aria-label="Site navigation">
@@ -316,22 +379,22 @@
 
         <article class="page-card" aria-labelledby="about-heading">
           <h3 id="about-heading">About Me</h3>
-          <p>Introduce yourself and your interests.</p>
+          <p>Armaan Mehta — Denison University, Class of 2029. Interested in the intersections of technology, culture, and society, and how digital tools shape the way we create, communicate, and understand the world.</p>
         </article>
 
         <article class="page-card" aria-labelledby="accessibility-heading">
           <h3 id="accessibility-heading">Accessibility</h3>
-          <p>Explain how you considered accessibility in your work.</p>
+          <p>This portfolio was designed with accessibility as a core priority, following WAVE compliance standards throughout. All content uses semantic HTML, sufficient color contrast, and descriptive headings to ensure it is readable and navigable by everyone, including users of assistive technologies.</p>
         </article>
 
         <article class="page-card" aria-labelledby="ai-heading">
           <h3 id="ai-heading">How I Use AI</h3>
-          <p>Describe how you approach AI use in this course.</p>
+          <p>Throughout DH 101, AI tools were used as collaborative partners in the making and reflection process. Rather than replacing thinking, AI was used to explore ideas, generate drafts, and critically examine what it means to create in the age of intelligent machines — always with human intent and judgment guiding the final work.</p>
         </article>
 
         <article class="page-card" aria-labelledby="sustainability-heading">
           <h3 id="sustainability-heading">Sustainability &amp; Ethics</h3>
-          <p>Reflect on environmental and ethical implications of AI.</p>
+          <p>AI systems carry real environmental and ethical costs, from energy consumption in data centers to undervalued labor across the Global South. This course encouraged examining those trade-offs honestly and considering how to engage with technology in ways that are more conscious, equitable, and sustainable.</p>
         </article>
 
         <article class="page-card" aria-labelledby="guide-heading" style="grid-column: 1 / -1;">
@@ -408,6 +471,10 @@ Write 3-5 sentences answering the question.
       <p>Weekly making assignments — artifacts, analyses, and artist statements</p>
     </div>
     <div class="section-body">
+      <div class="toggle-bar" aria-label="Expand or collapse all makes">
+        <button class="toggle-btn" onclick="toggleAll('makes', true)">Expand All</button>
+        <button class="toggle-btn" onclick="toggleAll('makes', false)">Collapse All</button>
+      </div>
 
       <!-- Week 1 -->
       <details open>
@@ -845,6 +912,10 @@ Write 3-5 sentences answering the question.
       <p>Weekly written reflections on AI, creativity, labor, and digital culture</p>
     </div>
     <div class="section-body">
+      <div class="toggle-bar" aria-label="Expand or collapse all reflections">
+        <button class="toggle-btn" onclick="toggleAll('reflections', true)">Expand All</button>
+        <button class="toggle-btn" onclick="toggleAll('reflections', false)">Collapse All</button>
+      </div>
 
       <details open>
         <summary>Week 1 — What counts as "making" in the age of AI?</summary>
@@ -980,5 +1051,22 @@ Write 3-5 sentences answering the question.
   <p>Built with semantic HTML and CSS &middot; Designed for accessibility (WAVE-compliant)</p>
 </footer>
 
+<script>
+  function toggleAll(sectionId, open) {
+    const section = document.getElementById(sectionId);
+    section.querySelectorAll('details').forEach(d => { d.open = open; });
+  }
+
+  // Smooth scroll with offset for sticky nav
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const offset = document.querySelector('nav').offsetHeight + 12;
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    });
+  });
+</script>
 </body>
 </html>
