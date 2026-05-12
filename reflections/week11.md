@@ -3,3 +3,5 @@
 # Week 11 Reflection
 
 Reflect 11: Who does the invisible work of AI, and who profits from it?
+
+The invisible work of AI requires multiple people to complete their tasks without receiving recognition as data labelers and content moderators and warehouse workers and miners who extract materials for hardware and factory workers who assemble chips and devices and contract workers who clean and organize data for models. The people behind AI systems work under challenging circumstances for minimal wages while their work remains unrecognized. Tech companies and their executives and investors and cloud providers who control platforms and computing power and models receive the largest share of profits. The system creates an unfair situation where workers who perform essential but unrecognized tasks receive the smallest benefits. The appearance of AI as an automatic system conceals a worldwide labor structure that operates through unequal distribution of authority. AI success requires both innovation and assessment of who receives public recognition and access to resources and financial incentives.

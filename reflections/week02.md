@@ -3,3 +3,5 @@
 # Week 2 Reflection
 
 Reflect 2: Can AI help us define what it means to be human, or does it reduce us to patterns?
+
+Artificial intelligence might help us gain a deeper insight into the human condition; however, it might also limit us to the detection of patterns if it is misused. AI system identifies patterns in language, images, and decision, making, which essentially reveals to what extent human behaviors are a result of habits and systematic influences. It might be quite disturbing to be confronted with our algorithmic selves, yet it actually urges us to delve deeper into aspects such as creativity, self, awareness, feelings, and ethics that AI can merely emulate but not genuinely experience. When humans are seen mainly as data which can be predicted and optimized, essential human characteristics such as empathy, vulnerability, and moral responsibility are at risk of disappearing. At the end of the day, AI is a combination of a tool and a mirror. The extent to which it aids us in self, discovery or simplifies human life depends on our ways of using it and the values we incorporate into it.

@@ -2,3 +2,5 @@
 # Week 1 Reflection
 
 Reflect 1: What counts as “making” in the age of AI? What might be gained/lost when machines participate in making?
+
+In the age of Artificial Intelligence making things is not about doing everything by hand. Making things is about coming up with ideas, making decisions and deciding what the end result will be. When machines help with making things people are still very important because they set goals, decide what is important and give meaning to the thing that is made. Artificial Intelligence can help people be more creative, by making it faster and easier for people to make things and by letting more people try things and come up with new ideas. At the same time, it can reduce the value placed on individual skill, effort, and personal expression. As a result, making shifts from physical labor to intention and decision-making, changing how we understand creativity and human production. 
