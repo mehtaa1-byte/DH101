@@ -2,6 +2,7 @@
 
 Link to Kumu:
 https://kumu.io/amarijames06/make-7#make-7
+
 Option C: Personal Network
 Part 1 Network Visualization:
 (15-30) entities related to AI:
